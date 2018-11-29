@@ -38,25 +38,41 @@ Team: Avengers }
 
 %%%%%%%%% BODY TEXT
 \section{Introduction}
+\begin{figure}[t]
+	\begin{center}
+		\includegraphics [scale=0.35] {image/face_normalmapping.jpg}
+	\end{center}
+	\caption{Face model with \textbf{Left:} Geometry only, \textbf{Right:} Geometry + Normal Map}
+	\label{fig:title}
+\end{figure} 
+
 \subsection{Motivation}
 It is an easy task to create a models geometry and texture. There are plenty of 3D modeling software available, like 3D Studio Max, Maya, and blender. It is not too difficult to program or load these into OpenGL as well. The problem of using only 3D geometry and Texture alone is that it can produce flat looking renderings, especially if the geometry is less detailed than the texture. This is typically the case, as texturing can hide simple geometry and flaws. There is more we can do with texture mapping than just wrapping the geometry with an RGB image. We can also add bumb maps, normal maps, displacement maps, and even subsurface scattering to make the rendering more realistic. But these additional mappings are difficult to produce and are often hand-made or produced in multi-step procedures available in some 3D modeling software. Adding tuned normals to the texture can improve the quality of 3D reconstructed scenes and objects while being illuminated by a light source. We wish for there to be a simple one-step procedure that can take an RGB picture and produce a high-quality normal map that takes into account lighting information.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics [scale=0.35] {image/wall.png}
-		\includegraphics [scale=0.35] {image/gun.png}
+		\includegraphics [scale=0.30] {image/wall.png}
+		\includegraphics [scale=0.30] {image/gun.png}
 	\end{center}
 	\caption{Comparison between \textbf{Left:} Geometry + Texture, \textbf{Right:} Geometry + Texture + Normal Map}
-	\label{fig:vgg-16}
+	\label{fig:compare}
 \end{figure} 
 
 \subsection{Project Description}
-Inspired by Shape-From-Shading, we propose a tool for estimating a normal map from a given texture. We will use an RGB-D to capture both the RGB image and initial surface normals. We will use off-the-shelf Intrinsic Image Decomposition to estimate the albedo texture and removing shadows. We will first use Spherical Harmonics to estimate the light source direction in the given estimated texture and RGB-D normals. This lighting direction will be used with SH to compute a per-pixel normal map based on the diffuse surface illumination of the texture. We can then apply this normal map in addition to the model and texture during the texturing process. We will demonstrate this by using a Fragment shader in OpenGL.
+Inspired by Shape-From-Shading, we propose a tool for estimating a normal map from a given texture. We will use an RGB-D to capture both the RGB image and initial surface normals. We will use off-the-shelf Intrinsic Image Decomposition to estimate the albedo texture and remove shadows. We will first use Spherical Harmonics to estimate the light source direction given the estimated texture and RGB-D normals. This lighting direction will be used with SH to compute a per-pixel normal map based on the diffuse surface illumination of the texture. We can then apply this normal map in addition to the model and texture during the texturing process. We will demonstrate this by using a Fragment shader in OpenGL.
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics [scale=0.35] {image/pipeline.png}
+	\end{center}
+	\caption{Proposed pipeline}
+	\label{fig:pipe1}
+\end{figure} 
+
+
 
 \subsection{Background}
 This project will require knowledge in Spherical Harmonics, least-squares optimization, normal mapping in OpenGL using fragment shaders.
 Using lighting to understand surface topology is very common in 3D Reconstruction and is also something we humans do when viewing an object under lighting. The amount of energy a surface receives is proportional to the angle of a surface to a light source, which is related to the surface normal. We can use Spherical Harmonics (SH) to measure this energy at each pixel on an image and determine the pixel's normal vector. SH often assumes diffuse surface illumination and there may be some error in spectral illumination and self-shadowing. Solving for normals and lighting is very similar to SFS, intrinsic image decomposition, and environmental lighting.
-
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics [scale=0.8] {image/energy.png}
@@ -64,6 +80,14 @@ Using lighting to understand surface topology is very common in 3D Reconstructio
 	\caption{light energy illuminated on a surface is proportional to cosine between the surface normal N and the unit vector towards the light source L}
 	\label{fig:vgg-16}
 \end{figure} 
+
+\begin{figure*}[!t]
+	\begin{center}
+		\includegraphics [scale=0.5] {image/pipeline_img.png}
+	\end{center}
+	\caption{Pipeline: Inputs are Raw RGB image and Normals extracted from target geometry. Intrinsic Image Decoposition of Raw RGB image to get albedo texture. Solve for lighting direction using Model Normals and albedo. Refine Normals using albedo and lighting direction.}
+	\label{fig:pipe2}
+\end{figure*} 
 
 \section{Development Environment}
 \begin{table}[h]
@@ -77,10 +101,29 @@ Using lighting to understand surface topology is very common in 3D Reconstructio
 
 \section{Research and Development Plan}
 \subsection{Research}
-Some time will be needed to understand and implement Spherical Harmonics (SH) for light source estimation. There are plenty of resources available since SH is widely used in the gaming industry for environment illumination and for 3D reconstruction. When estimating an environments illumination, SH uses a defined light source to compute the energy of a surface's illumination, which is the inverse of our problem. Also normal map estimation is usually an intermediary step in Shape-From-Shading (SFS), a popular 3D Reconstruction technique. Computing a generic normal map from an image is difficult. Assumptions on the geometry and diffuse surface reflectance (albedo texture) is needed. For face reconstruction, PCA models can provide both a normal map estimation from a generic face or fitted model, as well as for the albedo. With a RGB-D camera we can use the captured noisy normal map as starting point as well. Using and RGB-D camara for normals may be less accurate than aquiring normals from the geometry, but much easier. We plan on using an RGB-D because it is available and ease of use. The noisy normals will be refined during fitting. We refer to the initial normal map as $N_{ref}$. We also need a good approximation of the albedo texture $\rho_{ref}$, but it is difficult to aquire as we need an image without shading. We will pre-process the RGB image to remove shading using widely available open-source Intrinsic Image Decomposition. We will then Solve the least-squares problem to estimate lighting parameters using SH and given $N_{ref}$ and $\rho_{ref}$. After lighting has been estimated, we will solve for the normal map by refining $N_{ref}$ to produce $N$ using SH, the found lighting parametes, and $\rho_{ref}$. We will render the resulting normal map $N$ in OpenGL using a fragment shader.
+Some time will be needed to understand and implement Spherical Harmonics (SH) for light source estimation. There are plenty of resources available since SH is widely used in the gaming industry for environment illumination and for 3D reconstruction. When estimating an environments illumination, SH uses a defined light source to compute the energy of a surface's illumination, which is the inverse of our problem. Also normal map estimation is usually an intermediary step in Shape-From-Shading (SFS), a popular 3D Reconstruction technique. Computing a generic normal map from an image is difficult. Assumptions on the geometry and diffuse surface reflectance (albedo texture) is needed. For face reconstruction, PCA models can provide both a normal map estimation from a generic face or fitted model, as well as for the albedo. With a RGB-D camera we can use the captured noisy normal map as starting point as well. Using and RGB-D camara for normals may be less accurate than aquiring normals from the geometry. We will use the geometric prior to extract the initial normal map $N_{ref}$. We also need a good approximation of the albedo texture $\rho(x,y)$, but it is difficult to aquire as we need an image without shading. We will pre-process the RGB image to remove shading $s(x,y)$ using widely available open-source Intrinsic Image Decomposition. Intrinsic Image Decomposition is typically formulated as 
+\begin{equation}
+I(x,y) = \rho(x,y)s(x,y),
+\end{equation}
+Where $I(x,y)$ is the input raw image with shading from a lit environment. We will then Solve the least-squares problem to estimate lighting parameters $\hat{l}$ using SH and given $N_{ref}$ and $\rho(x,y)$ 
+\begin{equation}
+I(x,y) = \rho(x,y)\hat{l}H(N_{reg}),
+\end{equation}
+$H(n_x,n_y,n_z)$ is the Spherical Harmonics function using the first 3 bands. After lighting has been estimated, we will solve for the normal map by refining $N_{ref}$ to produce $N$ using SH, the found lighting parametes $\hat{l}$, and $\rho_{ref}$.
+\begin{equation}
+I(x,y) = \rho(x,y)\hat{l}H(N).
+\end{equation}
+We will render the resulting normal map $N$ in OpenGL using a fragment shader.
 
 \subsection{Development Plan} 
-Our plan is to separate the development tasks so we can work as a team, with equal contribution. The Project will be split up into 5 tasks: SH illumination estimation, Normal map generation from illumination, and rendering
+Our plan is to separate the development tasks so we can work as a team, with equal contribution. The Project will be split up into 5 tasks: Initial Normal Map extraction, Intrisic Image Decomposition, SH illumination estimation, Normal map refinement from illumination using SH, and rendering in an OpenGL fragment shader. Initial normal map will be extraced from the geometric target. We will use opensource Intrisic Image Decomposition to get our albedo texture. Using least-squares to minimize the illumination parameters $\hat{l}$
+\begin{equation}
+min_{\hat{l}}\ I(x,y) - \rho(x,y)\hat{l}H(N_{reg}).
+\end{equation}
+Using the solved illumination parameters $\hat{l}$, use least-squares to refine the normal vectors $N$
+\begin{equation}
+min_{N}\ I(x,y) - \rho(x,y)\hat{l}H(N).
+\end{equation}
 
 
 \subsection{Schedule}
@@ -104,9 +147,9 @@ See Table \ref{tab:roles}.
 	\begin{tabular}{l|l}
 		\textbf{Name} & Roles \\
 		\hline
-		WonJong & Intrinsic Image Decomposition + SH Light Source Estimation \\
+		WonJong & Intrinsic Image Decomposition \\&+ SH Light Source Estimation \\
 		Dahun & Render Model, Texture, and Normal Map \\
-		Jake & RGB-D Normal Map extraction + SH Normal Map Estimation \\
+		Jake & Normal Map extraction \\&+ SH Normal Map Estimation \\
 		\hline
 	\end{tabular}
 	\caption{Team Member Roles}
