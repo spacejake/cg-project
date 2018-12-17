@@ -100,6 +100,7 @@ def normalsFromShading(image_,        # input RGB image
                                albedo=albedo,
                                illum=illum,
                                normals=normals,
+                               dims=dims,
                                weight=weights['illum'])
 
     '''
@@ -173,10 +174,13 @@ def run_fitting(image, albedo, normals_init, outputPath):
     sparse_solver = lambda A, x: sp.linalg.cg(A, x, maxiter=opt_options['maxiter'])[0]
     opt_options['sparse_solver'] = sparse_solver
 
+    illum_init = ch.array(np.zeros(9))
+
     # run fitting
     illum, normals = normalsFromShading(image=image,  # input RGB image
                                         albedo=albedo,  # albedo image
-                                        normals_init=normals_init, # Initial normal map
+                                        illum=illum_init,  # albedo image
+                                        normals=normals_init, # Initial normal map
                                         weights=weights,  # weights for the objectives
                                         dims=image.shape, # Dimension tuple of input/output
                                         opt_options=opt_options)  # options
