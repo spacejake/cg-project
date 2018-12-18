@@ -127,20 +127,20 @@ def normalsFromShading(image,        # input RGB image
     timer_end = time()
     print
     "step 1: Illumination Estimation done, in %f sec\n" % (timer_end - timer_start)
-    '''
+
     # step 2: non-rigid alignment
     timer_start = time()
     print
     "step 2: start Normal Refinement..."
     ch.minimize(fun=illum_err, #objectives,
-                x0=[normals],
+                x0=[normals_ch],
                 method='dogleg',
                 callback=on_step,
                 options=opt_options)
     timer_end = time()
     print
     "step 2: Normal Refinement done, in %f sec\n" % (timer_end - timer_start)
-    '''
+
 
     # return results
     return illum_ch.r, normals_ch.r
