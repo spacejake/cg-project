@@ -1,6 +1,6 @@
 # cg-project: Normal From Shading
 
-Normal Estimation from Shading using 2-order Spherical Harmonics
+Normal Estimation from Shading using 2nd-order Spherical Harmonics
 
 # Python3 Dependancies
 * numpy
