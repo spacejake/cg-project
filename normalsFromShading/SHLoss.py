@@ -1,7 +1,6 @@
 import numpy as np
 import chumpy as ch
 from chumpy import Ch
-import math
 
 
 def getLambertionBasisFactors():

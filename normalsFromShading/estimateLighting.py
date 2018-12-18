@@ -1,16 +1,12 @@
 #!/usr/bin/env python
 
 import os
-import itertools
 import numpy as np
 
 import cv2
 import argparse
-from skimage import data, img_as_float, color
-from skimage.util import random_noise
 import chumpy as ch
 from chumpy import Ch
-from os.path import join
 
 from argparse import ArgumentParser
 import os.path as path
