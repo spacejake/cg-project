@@ -52,13 +52,12 @@ def normalsFromShading(image_,        # input RGB image
                        illum_,   # Initial SH illumination Parameters
                        normals_, # Initial normal map
                        weights,      # weights for the objectives
-                       dims,         # Dimension tuple of input/output
                        opt_options): # options
 
-    image = ch.array(image_.flatten())
-    albedo = ch.array(albedo_.flatten())
-    illum = ch.array(illum_.flatten())
-    normals = ch.array(normals_.flatten())
+    image = ch.array(image_)
+    albedo = ch.array(albedo_)
+    illum = ch.array(illum_)
+    normals = ch.array(normals_)
 
     """ function: estimate Normals from Shading using Spherical Harmonics
     input:
@@ -100,7 +99,6 @@ def normalsFromShading(image_,        # input RGB image
                                albedo=albedo,
                                illum=illum,
                                normals=normals,
-                               dims=dims,
                                weight=weights['illum'])
 
     '''
@@ -182,7 +180,6 @@ def run_fitting(image, albedo, normals_init, outputPath):
                                         illum=illum_init,  # albedo image
                                         normals=normals_init, # Initial normal map
                                         weights=weights,  # weights for the objectives
-                                        dims=image.shape, # Dimension tuple of input/output
                                         opt_options=opt_options)  # options
 
     # write result
