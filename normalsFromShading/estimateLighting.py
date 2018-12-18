@@ -9,6 +9,7 @@ import argparse
 from skimage import data, img_as_float, color
 from skimage.util import random_noise
 import chumpy as ch
+from chumpy import Ch
 from os.path import join
 
 from argparse import ArgumentParser
@@ -74,8 +75,7 @@ def normalsFromShading(image,        # input RGB image
 
     # options
     if opt_options is None:
-        print
-        "normalsFromShading(): no 'opt_options' provided, use default settings."
+        print("normalsFromShading(): no 'opt_options' provided, use default settings.")
         import scipy.sparse as sp
         opt_options = {}
         opt_options['disp'] = 1
@@ -86,11 +86,9 @@ def normalsFromShading(image,        # input RGB image
         opt_options['sparse_solver'] = sparse_solver
 
     # weights
-    print
-    "normalsFromShading(): use the following weights:"
+    print("normalsFromShading(): use the following weights:")
     for kk in weights.keys():
-        print
-        "normalsFromShading(): weights['%s'] = %f" % (kk, weights[kk])
+        print("normalsFromShading(): weights['%s'] = %f" % (kk, weights[kk]))
 
         # objectives
     # Illumination Error
@@ -100,14 +98,13 @@ def normalsFromShading(image,        # input RGB image
                                normals=normals_ch,
                                weight=weights['illum'])
 
-    '''
+
     # regularizer
-    illum_reg = weights['illum_reg'] * illum
-    normals_reg = weights['normals_reg'] * normals
+    #illum_reg = weights['illum_reg'] * illum_ch
+    normals_reg = Ch( weights['normals_reg']) * normals_ch
 
     objectives = {}
-    objectives.update({'illum': illum_err, 'illum_reg': illum_reg, 'normals_reg': normals_reg})
-    '''
+    objectives.update({'illum': illum_err})#, 'normals_reg': normals_reg})
 
     # on_step callback
     def on_step(_):
@@ -117,29 +114,25 @@ def normalsFromShading(image,        # input RGB image
     # step 1: rigid alignment
     from time import time
     timer_start = time()
-    print
-    "\nstep 1: start Illumination Estimation..."
+    print("\nstep 1: start Illumination Estimation...")
     ch.minimize(fun=illum_err,
                 x0=[illum_ch],
                 method='dogleg',
                 callback=on_step,
                 options=opt_options)
     timer_end = time()
-    print
-    "step 1: Illumination Estimation done, in %f sec\n" % (timer_end - timer_start)
+    print("step 1: Illumination Estimation done, in %f sec\n" % (timer_end - timer_start))
 
     # step 2: non-rigid alignment
     timer_start = time()
-    print
-    "step 2: start Normal Refinement..."
-    ch.minimize(fun=illum_err, #objectives,
+    print("step 2: start Normal Refinement...")
+    ch.minimize(fun=objectives,
                 x0=[normals_ch],
                 method='dogleg',
                 callback=on_step,
                 options=opt_options)
     timer_end = time()
-    print
-    "step 2: Normal Refinement done, in %f sec\n" % (timer_end - timer_start)
+    print("step 2: Normal Refinement done, in %f sec\n" % (timer_end - timer_start))
 
 
     # return results
@@ -159,7 +152,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
     weights['illum'] = 1.0
     weights['normals'] = 1.0
     weights['illum_reg'] = 0.0
-    weights['normals_reg'] = 0.0
+    weights['normals_reg'] = 0.001
 
     # optimization options
     import scipy.sparse as sp
@@ -183,7 +176,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
 
     # write result
     print("Estimatied Lignting Params:\n{0}".format(illum))
-    cv2.imwrite(outputPath, normals)
+    cv2.imwrite(outputPath, normals*255)
 
 
 # -----------------------------------------------------------------------------
