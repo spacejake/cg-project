@@ -47,17 +47,17 @@ def mkdir_s( dir ):
         os.mkdir( dir )
 
 # -----------------------------------------------------------------------------
-def normalsFromShading(image_,        # input RGB image
-                       albedo_,       # albedo image
-                       illum_,   # Initial SH illumination Parameters
-                       normals_, # Initial normal map
+def normalsFromShading(image,        # input RGB image
+                       albedo,       # albedo image
+                       illum,   # Initial SH illumination Parameters
+                       normals, # Initial normal map
                        weights,      # weights for the objectives
                        opt_options): # options
 
-    image_ch = ch.array(image_)
-    albedo_ch = ch.array(albedo_)
-    illum_ch = ch.array(illum_)
-    normals_ch = ch.array(normals_)
+    image_ch = ch.array(image)
+    albedo_ch = ch.array(albedo)
+    illum_ch = ch.array(illum)
+    normals_ch = ch.array(normals)
 
     """ function: estimate Normals from Shading using Spherical Harmonics
     input:
@@ -171,7 +171,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
     sparse_solver = lambda A, x: sp.linalg.cg(A, x, maxiter=opt_options['maxiter'])[0]
     opt_options['sparse_solver'] = sparse_solver
 
-    illum_init = ch.array(np.zeros(9))
+    illum_init = np.zeros(9)
 
     # run fitting
     illum, normals = normalsFromShading(image=image,  # input RGB image
