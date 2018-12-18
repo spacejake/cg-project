@@ -49,7 +49,7 @@ def computeSHEnergy(l, normals):
     return R
 
 
-def sh_illum_error(image, albedo, illum, normals, weight):
+def illum_error(image, albedo, illum, normals, weight):
 
     # I(u,v) = A(u,v) * sum_{lm}( a_l * l_lm * Y_lm(n(u,v))
     # A(u,v) : Albedo (surface reflectance color) at image coordiange

@@ -15,7 +15,7 @@ from os.path import join
 from argparse import ArgumentParser
 import os.path as path
 
-from SHLoss import sh_illum_error
+import SHLoss as sh
 
 def is_valid_file(parser, arg):
     if not path.exists(arg):
@@ -92,7 +92,7 @@ def normalsFromShading(image,        # input RGB image
 
         # objectives
     # Illumination Error
-    illum_err = sh_illum_error(image=image_ch,
+    illum_err = sh.illum_error(image=image_ch,
                                albedo=albedo_ch,
                                illum=illum_ch,
                                normals=normals_ch,
@@ -104,7 +104,7 @@ def normalsFromShading(image,        # input RGB image
     normals_reg = Ch( weights['normals_reg']) * normals_ch
 
     objectives = {}
-    objectives.update({'illum': illum_err})#, 'normals_reg': normals_reg})
+    objectives.update({'illum': illum_err})#, {'normals_reg': normals_reg})
 
     # on_step callback
     def on_step(_):
@@ -134,9 +134,12 @@ def normalsFromShading(image,        # input RGB image
     timer_end = time()
     print("step 2: Normal Refinement done, in %f sec\n" % (timer_end - timer_start))
 
+    R = sh.computeSHEnergy(illum_ch, normals_ch)
+
+    result = albedo.reshape(-1) * R
 
     # return results
-    return illum_ch.r, normals_ch.r
+    return illum_ch.r, normals_ch.r, result.r.reshape(image_ch.shape)
 
 
 # -----------------------------------------------------------------------------
@@ -167,16 +170,19 @@ def run_fitting(image, albedo, normals_init, outputPath):
     illum_init = np.zeros(9)
 
     # run fitting
-    illum, normals = normalsFromShading(image=image,  # input RGB image
-                                        albedo=albedo,  # albedo image
-                                        illum=illum_init,  # albedo image
-                                        normals=normals_init, # Initial normal map
-                                        weights=weights,  # weights for the objectives
-                                        opt_options=opt_options)  # options
+    illum, normals, result = \
+        normalsFromShading( image=image,  # input RGB image
+                            albedo=albedo,  # albedo image
+                            illum=illum_init,  # albedo image
+                            normals=normals_init, # Initial normal map
+                            weights=weights,  # weights for the objectives
+                            opt_options=opt_options)  # options
 
     # write result
     print("Estimatied Lignting Params:\n{0}".format(illum))
     cv2.imwrite(outputPath, normals*255)
+    cv2.imwrite("result.png", result*255)
+    cv2.imwrite("albedo.png", albedo*255)
 
 
 # -----------------------------------------------------------------------------
