@@ -24,54 +24,6 @@ def getSHNormalBasis():
 
     return (c0, c1, c2)
 
-
-def SHFromNormal(normal, c):
-    x = normal[0]
-    y = normal[1]
-    z = normal[2]
-
-    # SH 0-Basis
-    y0 = c[0]
-
-    # SH 1-Basis
-    y1 = c[1] * x
-    y2 = c[1] * y
-    y3 = c[1] * z
-
-    # SH 2-Basis
-    y4 = c[2] * x * y
-    y5 = c[2] * x * z
-    y6 = c[2] * y * z
-    y7 = (c[2] / Ch(2.)) * (x**2. - y**2.)
-    y8 = (c[2] / (Ch(2.) * ch.sqrt(3.))) * (Ch(3.) * z**2. - 1.)
-
-
-    return (y0,
-            y1, y2, y3,
-            y4, y5, y6, y7, y8)
-
-
-def computeSHEnergy(l, a, Y):
-
-    # SH 0-Basis
-    r0 = a[0] * l[0] * Y[0]
-
-    # SH 1-Basis
-    r1 = a[1] * l[1] * Y[1]
-    r2 = a[1] * l[2] * Y[2]
-    r3 = a[1] * l[3] * Y[3]
-
-    # SH 1-Basis
-    r4 = a[2] * l[4] * Y[4]
-    r5 = a[2] * l[5] * Y[5]
-    r6 = a[2] * l[6] * Y[6]
-    r7 = a[2] * l[7] * Y[7]
-    r8 = a[2] * l[8] * Y[8]
-
-    R = r0 + r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8
-
-    return R
-
 def computeSHEnergy(l, normals):
     a = getLambertionBasisFactors()
     c = getSHNormalBasis()
@@ -110,8 +62,10 @@ def sh_illum_error(image, albedo, illum, normals, weight):
 
     R = computeSHEnergy(illum, normals)
 
-    I_est = albedo.reshape(-1) * R
+    model = albedo.reshape(-1) * R
 
-    residuals = weight * (image.reshape(-1) - I_est)
+    I = image.reshape(-1)
+
+    residuals = weight * (I - model)
 
     return residuals

@@ -14,7 +14,7 @@ from os.path import join
 from argparse import ArgumentParser
 import os.path as path
 
-from SHLoss import sh_illum_error, getSHBasis
+from SHLoss import sh_illum_error
 
 def is_valid_file(parser, arg):
     if not path.exists(arg):
@@ -54,20 +54,19 @@ def normalsFromShading(image_,        # input RGB image
                        weights,      # weights for the objectives
                        opt_options): # options
 
-    image = ch.array(image_)
-    albedo = ch.array(albedo_)
-    illum = ch.array(illum_)
-    normals = ch.array(normals_)
+    image_ch = ch.array(image_)
+    albedo_ch = ch.array(albedo_)
+    illum_ch = ch.array(illum_)
+    normals_ch = ch.array(normals_)
 
     """ function: estimate Normals from Shading using Spherical Harmonics
     input:
         image: input RGB image
-               albedo: albedo image
-               illum_init: Initial SH illumination Parameters
-               normals_init: Initial normal map
-               weights: weights for the objectives
-               dims: Dimension tuple of input/output
-               opt_options:  optimization options
+        albedo: albedo image
+        illum_init: Initial SH illumination Parameters
+        normals_init: Initial normal map
+        weights: weights for the objectives
+        opt_options:  optimization options
     output:
         illum: estimated SH illumination
         normals: estimated Normals
@@ -95,10 +94,10 @@ def normalsFromShading(image_,        # input RGB image
 
         # objectives
     # Illumination Error
-    illum_err = sh_illum_error(image=image,
-                               albedo=albedo,
-                               illum=illum,
-                               normals=normals,
+    illum_err = sh_illum_error(image=image_ch,
+                               albedo=albedo_ch,
+                               illum=illum_ch,
+                               normals=normals_ch,
                                weight=weights['illum'])
 
     '''
@@ -121,7 +120,7 @@ def normalsFromShading(image_,        # input RGB image
     print
     "\nstep 1: start Illumination Estimation..."
     ch.minimize(fun=illum_err,
-                x0=[illum],
+                x0=[illum_ch],
                 method='dogleg',
                 callback=on_step,
                 options=opt_options)
@@ -144,7 +143,7 @@ def normalsFromShading(image_,        # input RGB image
     '''
 
     # return results
-    return illum, normals
+    return illum_ch.r, normals_ch.r
 
 
 # -----------------------------------------------------------------------------
@@ -196,10 +195,10 @@ def main():
     normalsPath = args.normalMap
     outputPath = args.output
 
-    print(imagePath)
-    print(albedoPath)
-    print(normalsPath)
-    print(outputPath)
+    # print(imagePath)
+    # print(albedoPath)
+    # print(normalsPath)
+    print("Output Path: {}".format(outputPath))
 
     # Read Images into numpy arrays and normalize
     # TODO: compute SH for each channel
@@ -211,9 +210,7 @@ def main():
     #print(albedo.shape)
     #print(normalMap.shape)
 
-    sh_basis = getSHBasis()
-
-    print(sh_basis)
+    run_fitting(image, albedo, normalMap, outputPath)
 
     # run_fitting()
 

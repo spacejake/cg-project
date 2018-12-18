@@ -43,8 +43,9 @@ R = R0 + R1 + R2
 I_est = albedo.reshape(-1) * R
 
 res = image.reshape(-1) - I_est
+res_np = res.r
 
 print(R)
 print(I_est)
-print(res)
+print(res_np)
 
