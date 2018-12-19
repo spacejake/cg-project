@@ -1,0 +1,36 @@
+python3 estimateLighting.py --image ../data/concreteWall/concrete.png --albedo ../data/concreteWall/concrete-r.png
+Output Path: ./output-normals.bmp
+Assuming solid surface perpendicular to camera...
+normalsFromShading(): use the following weights:
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['illum_reg'] = 0.000000
+normalsFromShading(): weights['normals_reg'] = 0.001000
+normalsFromShading(): weights['illum'] = 1.000000
+
+step 1: start Illumination Estimation...
+6.27e+05
+3.38e+05
+1.58e+04
+1.47e+04
+step 1: Illumination Estimation done, in 13.567724 sec
+
+step 2: start Normal Refinement...
+1.47e+04 | illum: 1.47e+04
+1.47e+04 | illum: 1.47e+04
+1.47e+04 | illum: 1.47e+04
+1.46e+04 | illum: 1.46e+04
+1.44e+04 | illum: 1.44e+04
+1.39e+04 | illum: 1.39e+04
+1.28e+04 | illum: 1.28e+04
+1.02e+04 | illum: 1.02e+04
+5.49e+03 | illum: 5.49e+03
+6.31e+02 | illum: 6.31e+02
+3.28e-01 | illum: 3.28e-01
+3.77e-06 | illum: 3.77e-06
+4.06e-13 | illum: 4.06e-13
+step 2: Normal Refinement done, in 130.741798 sec
+
+Estimatied Lignting Params:
+[ 0.13206182  0.26412363  0.02641236  0.02641236  0.03616662  0.03616662
+  0.00361666  0.17902476 -0.10127191]
+
