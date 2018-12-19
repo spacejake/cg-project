@@ -1,0 +1,35 @@
+python3 estimateLighting.py --image ../data/brick/brick.png --albedo ../data/brick/brick-r.png 
+Output Path: ./output-normals.bmp
+Assuming solid surface perpendicular to camera...
+normalsFromShading(): use the following weights:
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['normals_reg'] = 0.001000
+normalsFromShading(): weights['illum_reg'] = 0.000000
+normalsFromShading(): weights['illum'] = 1.000000
+
+step 1: start Illumination Estimation...
+5.34e+05
+2.26e+05
+1.76e+04
+step 1: Illumination Estimation done, in 12.218565 sec
+
+step 2: start Normal Refinement...
+1.76e+04 | illum: 1.76e+04
+1.76e+04 | illum: 1.76e+04
+1.76e+04 | illum: 1.76e+04
+1.75e+04 | illum: 1.75e+04
+1.73e+04 | illum: 1.73e+04
+1.68e+04 | illum: 1.68e+04
+1.57e+04 | illum: 1.57e+04
+1.29e+04 | illum: 1.29e+04
+7.08e+03 | illum: 7.08e+03
+6.09e+02 | illum: 6.09e+02
+2.34e+00 | illum: 2.34e+00
+2.84e-04 | illum: 2.84e-04
+3.08e-11 | illum: 3.08e-11
+step 2: Normal Refinement done, in 120.822895 sec
+
+Estimatied Lignting Params:
+[ 0.11082956  0.19949321  0.01108296  0.01108296  0.01365837  0.01365837
+  0.0007588   0.1225459  -0.08696132]
+

@@ -9,7 +9,7 @@ def getLambertionBasisFactors():
     a0 = ch.pi
     a1 = ch.pi * Ch(2.) / ch.sqrt(3.)
     a2 = ch.pi * Ch(2.) / ch.sqrt(8.)
-    #a3 = 0 Only need first 3 basis factors for 3-order SH
+    #a3 = 0 Only need first 3 basis factors for 2nd-order SH
 
     return (a0, a1, a2)
 
@@ -27,9 +27,10 @@ def computeSHEnergy(l, normals):
     a = getLambertionBasisFactors()
     c = getSHNormalBasis()
 
-    nx = normals[:, :, 0].reshape(-1)
+    # OpenCV reads images in BGR, account for this by swapping x and z
+    nx = normals[:, :, 2].reshape(-1)
     ny = normals[:, :, 1].reshape(-1)
-    nz = normals[:, :, 2].reshape(-1)
+    nz = normals[:, :, 0].reshape(-1)
 
     R0 = a[0] * l[0] * c[0]
 

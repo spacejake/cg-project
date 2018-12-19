@@ -134,8 +134,12 @@ def normalsFromShading(image,        # input RGB image
 
     result = albedo.reshape(-1) * R
 
+    R_init = sh.computeSHEnergy(illum_ch, ch.array(normals))
+
+    initNormalSH = albedo.reshape(-1) * R_init
+
     # return results
-    return illum_ch.r, normals_ch.r, result.r.reshape(albedo.shape), albedo_ch.r
+    return illum_ch.r, normals_ch.r, result.r.reshape(albedo.shape), initNormalSH.r.reshape(albedo.shape), albedo_ch.r
 
 
 # -----------------------------------------------------------------------------
@@ -166,7 +170,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
     illum_init = np.zeros(9)
 
     # run fitting
-    illum, normals, result, albedo_r = \
+    illum, normals, result, result_init, albedo_r = \
         normalsFromShading( image=image,  # input RGB image
                             albedo=albedo,  # albedo image
                             illum=illum_init,  # albedo image
@@ -177,6 +181,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
     # write result
     print("Estimatied Lignting Params:\n{0}".format(illum))
     cv2.imwrite(outputPath, normals*255)
+    cv2.imwrite("before.png", result_init*255)
     cv2.imwrite("result.png", result*255)
     cv2.imwrite("albedo.png", albedo_r*255)
 
@@ -207,9 +212,9 @@ def main():
     else:
         print("Assuming solid surface perpendicular to camera...")
         normalMap = np.zeros(np.hstack((image.shape,3)))
-        normalMap[:,:,0] = 0.9
-        normalMap[:,:,1] = 0.05
-        normalMap[:,:,2] = 0.05
+        normalMap[:,:,0] = 1.
+        normalMap[:,:,1] = 0.
+        normalMap[:,:,2] = 0.
 
     #print(image.shape)
     #print(albedo.shape)
