@@ -100,7 +100,7 @@ def normalsFromShading(image,        # input RGB image
     normals_reg = Ch( weights['normals_reg']) * normals_ch
 
     objectives = {}
-    objectives.update({'illum': illum_err, 'normals_reg': normals_reg})
+    objectives.update({'illum': illum_err})# 'normals_reg': normals_reg})
 
     # on_step callback
     def on_step(_):

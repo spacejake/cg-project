@@ -1,0 +1,36 @@
+python3 estimateLighting.py --image ../data/stone1/stone.png --albedo ../data/stone1/stone-r.png 
+Output Path: ./output-normals.bmp
+Assuming solid surface perpendicular to camera...
+normalsFromShading(): use the following weights:
+normalsFromShading(): weights['illum'] = 1.000000
+normalsFromShading(): weights['illum_reg'] = 0.000000
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['normals_reg'] = 0.010000
+
+step 1: start Illumination Estimation...
+4.84e+05
+2.79e+05
+2.13e+04
+1.29e+04
+step 1: Illumination Estimation done, in 14.737581 sec
+
+step 2: start Normal Refinement...
+1.29e+04 | illum: 1.29e+04
+1.28e+04 | illum: 1.28e+04
+1.28e+04 | illum: 1.28e+04
+1.28e+04 | illum: 1.28e+04
+1.26e+04 | illum: 1.26e+04
+1.22e+04 | illum: 1.22e+04
+1.12e+04 | illum: 1.12e+04
+8.97e+03 | illum: 8.97e+03
+4.69e+03 | illum: 4.69e+03
+3.50e+02 | illum: 3.50e+02
+2.56e-01 | illum: 2.56e-01
+2.66e-06 | illum: 2.66e-06
+1.21e-14 | illum: 1.21e-14
+step 2: Normal Refinement done, in 131.306114 sec
+
+Estimatied Lignting Params:
+[ 0.16325574  0.29386034  0.01632557  0.01632557  0.02011924  0.02011924
+  0.00111774  0.18051431 -0.12809701]
+
