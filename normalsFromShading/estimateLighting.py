@@ -32,7 +32,7 @@ def get_arguments():
     parser.add_argument("--albedo", dest="albedo", required=True,
                     help="Path to albedo Image", metavar="FILE",
                     type=lambda x: is_valid_file(parser, x))
-    parser.add_argument("--normals", dest="normalMap", required=True,
+    parser.add_argument("--normals", dest="normalMap", required=False,
                     help="Path to normal map", metavar="FILE",
                     type=lambda x: is_valid_file(parser, x))
     parser.add_argument("--output", dest="output", default='./output-normals.bmp',
@@ -100,7 +100,7 @@ def normalsFromShading(image,        # input RGB image
     normals_reg = Ch( weights['normals_reg']) * normals_ch
 
     objectives = {}
-    objectives.update({'illum': illum_err})#, {'normals_reg': normals_reg})
+    objectives.update({'illum': illum_err, 'normals_reg': normals_reg})
 
     # on_step callback
     def on_step(_):
@@ -135,7 +135,7 @@ def normalsFromShading(image,        # input RGB image
     result = albedo.reshape(-1) * R
 
     # return results
-    return illum_ch.r, normals_ch.r, result.r.reshape(image_ch.shape)
+    return illum_ch.r, normals_ch.r, result.r.reshape(albedo.shape), albedo_ch.r
 
 
 # -----------------------------------------------------------------------------
@@ -166,7 +166,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
     illum_init = np.zeros(9)
 
     # run fitting
-    illum, normals, result = \
+    illum, normals, result, albedo_r = \
         normalsFromShading( image=image,  # input RGB image
                             albedo=albedo,  # albedo image
                             illum=illum_init,  # albedo image
@@ -178,7 +178,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
     print("Estimatied Lignting Params:\n{0}".format(illum))
     cv2.imwrite(outputPath, normals*255)
     cv2.imwrite("result.png", result*255)
-    cv2.imwrite("albedo.png", albedo*255)
+    cv2.imwrite("albedo.png", albedo_r*255)
 
 
 # -----------------------------------------------------------------------------
@@ -199,7 +199,17 @@ def main():
     # TODO: compute SH for each channel
     image = cv2.imread(imagePath, cv2.IMREAD_GRAYSCALE)/255
     albedo = cv2.imread(albedoPath, cv2.IMREAD_GRAYSCALE)/255
-    normalMap = cv2.imread(normalsPath, cv2.IMREAD_COLOR)/255
+    normalMap = None
+
+    if args.normalMap is not None:
+        print("Loading Normal Map...")
+        normalMap = cv2.imread(normalsPath, cv2.IMREAD_COLOR)/255
+    else:
+        print("Assuming solid surface perpendicular to camera...")
+        normalMap = np.zeros(np.hstack((image.shape,3)))
+        normalMap[:,:,0] = 0.9
+        normalMap[:,:,1] = 0.05
+        normalMap[:,:,2] = 0.05
 
     #print(image.shape)
     #print(albedo.shape)
