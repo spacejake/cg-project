@@ -1,0 +1,41 @@
+python3 estimateLighting.py --image ../data/dahun2/masked_dahun.png --albedo ../data/dahun2/masked_dahun-r.png --normals ../data/dahun2/dahun2_normals.png 
+Output Path: ./output-normals.bmp
+Loading Normal Map...
+normalsFromShading(): use the following weights:
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['illum_reg'] = 0.000000
+normalsFromShading(): weights['normals_reg'] = 0.001000
+normalsFromShading(): weights['illum'] = 1.000000
+
+step 1: start Illumination Estimation...
+2.73e+03
+1.41e+03
+2.53e+02
+1.35e+02
+1.35e+02
+step 1: Illumination Estimation done, in 0.546643 sec
+
+step 2: start Normal Refinement...
+1.35e+02 | illum: 1.35e+02
+1.34e+02 | illum: 1.34e+02
+1.32e+02 | illum: 1.32e+02
+1.27e+02 | illum: 1.27e+02
+1.14e+02 | illum: 1.14e+02
+8.90e+01 | illum: 8.90e+01
+5.31e+01 | illum: 5.31e+01
+2.69e+01 | illum: 2.69e+01
+1.47e+01 | illum: 1.47e+01
+1.00e+01 | illum: 1.00e+01
+6.59e+00 | illum: 6.59e+00
+3.33e+00 | illum: 3.33e+00
+1.14e+00 | illum: 1.14e+00
+3.63e-02 | illum: 3.63e-02
+1.69e-02 | illum: 1.69e-02
+6.69e-04 | illum: 6.69e-04
+2.52e-06 | illum: 2.52e-06
+7.21e-11 | illum: 7.21e-11
+step 2: Normal Refinement done, in 29.776866 sec
+
+Estimatied Lignting Params:
+[ 0.61462683 -0.27487119  0.39332895 -0.11050449  0.15947791  0.01785297
+ -0.02848065  0.33086671  0.06498447]
