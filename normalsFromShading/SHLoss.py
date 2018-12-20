@@ -55,7 +55,7 @@ def illum_error(image, albedo, illum, normals, weight):
     # A(u,v) : Albedo (surface reflectance color) at image coordiange
     # a_l : Lambertian SH Basis coeff
     # l_lm : lighting parameter of m coeff at SH basis l
-    # Y_lm : diffuse surface energy using Normal of m coeff at SH basis l
+    # Y_lm : diffuse surface energy using Normal of m coeff at SH band l
     # n(u,v) : normal at image coordinate
     # l : SH basis
     # m : m coeff at SH basis l

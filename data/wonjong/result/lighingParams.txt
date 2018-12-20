@@ -1,33 +1,44 @@
-C:\Users\space\AppData\Local\Programs\Python\Python35\python estimateLighting.py --image ..\data\brick\brick.png --albedo ..\data\brick\brick-r.png
+python estimateLighting.py --image ..\data\wonjong\masked.png --albedo ..\data\wonjong\masked-r.png --normals ..\data\wonjong\wonjong.png
 Output Path: ./output-normals.bmp
-Assuming solid surface perpendicular to camera...
+Loading Normal Map...
 normalsFromShading(): use the following weights:
-normalsFromShading(): weights['normals'] = 1.000000
-normalsFromShading(): weights['illum'] = 1.000000
-normalsFromShading(): weights['normals_reg'] = 0.001000
 normalsFromShading(): weights['illum_reg'] = 0.000000
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['normals_reg'] = 0.001000
+normalsFromShading(): weights['illum'] = 1.000000
 
 step 1: start Illumination Estimation...
-5.34e+05
-2.01e+05
-1.76e+04
-step 1: Illumination Estimation done, in 11.237946 sec
+3.29e+03
+1.56e+03
+2.73e+02
+1.78e+02
+1.78e+02
+step 1: Illumination Estimation done, in 2.637913 sec
 
 step 2: start Normal Refinement...
-1.76e+04 | illum: 1.76e+04
-1.76e+04 | illum: 1.76e+04
-1.76e+04 | illum: 1.76e+04
-1.75e+04 | illum: 1.75e+04
-1.72e+04 | illum: 1.72e+04
-1.65e+04 | illum: 1.65e+04
-1.48e+04 | illum: 1.48e+04
-1.09e+04 | illum: 1.09e+04
-3.77e+03 | illum: 3.77e+03
-8.26e+00 | illum: 8.26e+00
-1.34e-03 | illum: 1.34e-03
-2.75e-10 | illum: 2.75e-10
-step 2: Normal Refinement done, in 200.682946 sec
+1.78e+02 | illum: 1.78e+02
+1.77e+02 | illum: 1.77e+02
+1.75e+02 | illum: 1.75e+02
+1.70e+02 | illum: 1.70e+02
+1.57e+02 | illum: 1.57e+02
+1.31e+02 | illum: 1.31e+02
+8.58e+01 | illum: 8.58e+01
+3.06e+01 | illum: 3.06e+01
+1.26e+01 | illum: 1.26e+01
+5.53e+00 | illum: 5.53e+00
+3.31e+00 | illum: 3.31e+00
+2.18e+00 | illum: 2.18e+00
+1.31e+00 | illum: 1.31e+00
+1.01e+00 | illum: 1.01e+00
+2.17e-01 | illum: 2.17e-01
+8.54e-02 | illum: 8.54e-02
+1.78e-03 | illum: 1.78e-03
+1.00e-04 | illum: 1.00e-04
+2.44e-05 | illum: 2.44e-05
+6.23e-07 | illum: 6.23e-07
+6.03e-09 | illum: 6.03e-09
+step 2: Normal Refinement done, in 92.266872 sec
 
 Estimatied Lignting Params:
-[0.0905653  0.         0.         0.1811306  0.         0.
- 0.         0.         0.14319631]
+[ 0.11128913  0.05943864  0.31428095  0.39361838 -0.29167652 -0.05314109
+ -0.27880992 -0.07926752 -0.22137152]
