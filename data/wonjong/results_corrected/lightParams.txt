@@ -1,0 +1,44 @@
+python3 estimateLighting.py --image ../data/wonjong/masked.png --albedo ../data/wonjong/masked-r.png --normals ../data/wonjong/wonjong_normals_corrected.png 
+Output Path: ./output-normals.bmp
+Loading Normal Map...
+normalsFromShading(): use the following weights:
+normalsFromShading(): weights['normals_reg'] = 0.001000
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['illum'] = 1.000000
+normalsFromShading(): weights['illum_reg'] = 0.000000
+
+step 1: start Illumination Estimation...
+3.29e+03
+8.52e+02
+2.98e+02
+1.83e+02
+1.76e+02
+1.76e+02
+step 1: Illumination Estimation done, in 0.651769 sec
+
+step 2: start Normal Refinement...
+1.76e+02 | illum: 1.76e+02
+1.75e+02 | illum: 1.75e+02
+1.72e+02 | illum: 1.72e+02
+1.65e+02 | illum: 1.65e+02
+1.50e+02 | illum: 1.50e+02
+1.18e+02 | illum: 1.18e+02
+6.53e+01 | illum: 6.53e+01
+1.90e+01 | illum: 1.90e+01
+5.09e+00 | illum: 5.09e+00
+2.87e+00 | illum: 2.87e+00
+2.55e+00 | illum: 2.55e+00
+1.61e+00 | illum: 1.61e+00
+2.98e-02 | illum: 2.98e-02
+4.16e-04 | illum: 4.16e-04
+1.36e-05 | illum: 1.36e-05
+1.16e-06 | illum: 1.16e-06
+1.91e-07 | illum: 1.91e-07
+8.17e-08 | illum: 8.17e-08
+4.11e-08 | illum: 4.11e-08
+step 2: Normal Refinement done, in 30.716257 sec
+
+Estimatied Lignting Params:
+[-0.3435634   0.48796235  0.43789214  0.46418151 -0.51468982  0.08510753
+ -0.30056874 -0.41999776 -0.20771296]
+
