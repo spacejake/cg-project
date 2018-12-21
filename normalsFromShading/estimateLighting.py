@@ -208,7 +208,10 @@ def main():
 
     if args.normalMap is not None:
         print("Loading Normal Map...")
-        normalMap = cv2.imread(normalsPath, cv2.IMREAD_COLOR)/255
+        # Recreate normal map from uchar
+        normalMap_raw = cv2.imread(normalsPath, cv2.IMREAD_COLOR)
+        #normalMap = ((normalMap_raw - 127) / 127)
+        normalMap = normalMap_raw/255
     else:
         print("Assuming solid surface perpendicular to camera...")
         normalMap = np.zeros(np.hstack((image.shape,3)))
