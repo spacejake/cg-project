@@ -1,0 +1,56 @@
+python3 estimateLighting.py --image ../data/jake/masked_jake.png --albedo ../data/jake/masked_jake-r.png --normals ../data/jake/jake_normals_corrected.png 
+Output Path: ./output-normals.bmp
+Loading Normal Map...
+normalsFromShading(): use the following weights:
+normalsFromShading(): weights['illum_reg'] = 0.000000
+normalsFromShading(): weights['normals'] = 1.000000
+normalsFromShading(): weights['normals_reg'] = 0.001000
+normalsFromShading(): weights['illum'] = 1.000000
+
+step 1: start Illumination Estimation...
+5.95e+03
+1.38e+03
+5.60e+02
+3.46e+02
+3.46e+02
+step 1: Illumination Estimation done, in 0.595052 sec
+
+step 2: start Normal Refinement...
+3.46e+02 | illum: 3.46e+02
+3.45e+02 | illum: 3.45e+02
+3.43e+02 | illum: 3.43e+02
+3.37e+02 | illum: 3.37e+02
+3.23e+02 | illum: 3.23e+02
+2.91e+02 | illum: 2.91e+02
+2.24e+02 | illum: 2.24e+02
+1.48e+02 | illum: 1.48e+02
+8.16e+01 | illum: 8.16e+01
+2.86e+01 | illum: 2.86e+01
+1.88e+01 | illum: 1.88e+01
+1.11e+01 | illum: 1.11e+01
+4.73e+00 | illum: 4.73e+00
+1.30e+00 | illum: 1.30e+00
+4.73e-01 | illum: 4.73e-01
+2.13e-02 | illum: 2.13e-02
+3.49e-04 | illum: 3.49e-04
+2.91e-05 | illum: 2.91e-05
+2.67e-05 | illum: 2.67e-05
+2.08e-05 | illum: 2.08e-05
+1.83e-05 | illum: 1.83e-05
+1.26e-05 | illum: 1.26e-05
+8.92e-06 | illum: 8.92e-06
+5.76e-06 | illum: 5.76e-06
+2.95e-06 | illum: 2.95e-06
+2.16e-06 | illum: 2.16e-06
+1.82e-06 | illum: 1.82e-06
+7.21e-07 | illum: 7.21e-07
+2.14e-07 | illum: 2.14e-07
+4.85e-08 | illum: 4.85e-08
+1.07e-08 | illum: 1.07e-08
+2.14e-09 | illum: 2.14e-09
+step 2: Normal Refinement done, in 57.064741 sec
+
+Estimatied Lignting Params:
+[ 0.6184374  -0.20878437  0.38225156 -0.27441856 -0.2479079   0.18312824
+  0.03431226  0.19704065  0.06807307]
+
