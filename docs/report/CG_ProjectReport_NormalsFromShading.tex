@@ -161,7 +161,7 @@ With illumination known, we next refine the prior normal map by minimizing
 \end{equation}
 
 \section{Visualization}
-To visualize our refined normal, we simply used a fragment shader with OpenGL. In the fragment shader, the illumination consists of 2nd-order spherical harmonics with greyscale values and one directional light. There are two ways of visualizing, the one is using our refined normal and the other one is just using simple interploated normal.  When we mapped the texture from the original image, the results didn't have big differences as Figure 6 shows. It is because the texture from the original image is already shaded. However, when we mapped the flat texture with gray color, the results had big differences as Figure 7 shows.  The result with our refined normal has much more details and looks much more realistic.
+To visualize our refined normal, we simply used a fragment shader with OpenGL. In the fragment shader, the illumination consists of 2nd-order spherical harmonics with greyscale values and one directional light. There are two ways of visualizing, the one is using our refined normal and the other one is just using simple interploated normal.  When we mapped the texture from the original image, the results didn't have big differences as Figure \ref{fig:result-visual1} shows. It is because the texture from the original image is already shaded. However, when we mapped the flat texture with gray color, the results had big differences as Figure \ref{fig:result-visual2} shows.  The result with our refined normal has much more details and looks much more realistic.
 
 
 \begin{figure}[!h]
