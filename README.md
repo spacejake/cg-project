@@ -8,3 +8,8 @@ Normal Estimation from Shading using 2nd-order Spherical Harmonics
 * metabochumpy
 
 Inputs needed are Raw RGB Image, albedo, and estimated normals
+
+# Usage
+usage: estimateLighting.py [-h] --image FILE --albedo FILE [--normals FILE]
+
+If normals are not given, a flat surface with normals pointing towards camera is assumed.
