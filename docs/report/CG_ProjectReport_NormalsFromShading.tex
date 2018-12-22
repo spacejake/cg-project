@@ -196,7 +196,9 @@ The minimized illumination and per-pixel surface normals results in very small L
 The resulting normal maps appear to better match the perceived geometry of the input image over the interpolated face model, see Fig. \ref{fig:normals}.
 
 \subsection{Rendered Results} \label{sec:render}
-The improved reflectance is clearly visible in the illuminated untextured (uniform color) face models. The rendered untextured models using interpolated normals clearly lack fine surface details. Rendered untextured models using the refined normal map have far more reflected detail added, including nose shape, improved eye shape, more details in all areas of the face and neck, with the addition fo hair and clothing not represented by the model. There is some noise, this is caused by some loss in converting 32-bit floating point normals to unsigned char. We hope to fix this conversion issue, and we are currently seeing improvements in this area. Also regularization can help prevent some noise, to smooth sudden changes in surface normals. See Fig. \ref{fig:render} for result of renderings.
+The improved reflectance is clearly visible in the illuminated untextured (uniform color) face models. The rendered untextured models using interpolated normals clearly lack fine surface details. Rendered untextured models using the refined normal map have far more reflected detail added, including nose shape, improved eye shape, more details in all areas of the face and neck, with the addition fo hair and clothing not represented by the model. \par 
+When texturing the face model using the RGB Image $I$, it is difficult to notice any improvements to due to the naturally illuminated image image. 
+There is also some noise, this is caused by some loss in converting 32-bit floating point normals to unsigned char. We hope to fix this conversion issue, and we are currently seeing improvements in this area. Also regularization can help prevent some noise, to smooth sudden changes in surface normals. See Fig. \ref{fig:render} for result of renderings.
 
 
 \begin{figure*}[t]
