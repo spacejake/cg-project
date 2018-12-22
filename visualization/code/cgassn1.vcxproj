@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{6A04D1F0-A05E-4B42-BA1E-53C36E8692A1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\PLUS\Downloads\install_library\glew-2.1.0\include;C:\Users\PLUS\Downloads\install_library\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\PLUS\Downloads\install_library\glew-2.1.0\lib\Release\Win32;C:\Users\PLUS\Downloads\install_library\freeglut\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>D:\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\include;C:\Users\PLUS\Downloads\DevIL Windows SDK\include;C:\Users\wonjong\Downloads\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\include;D:\install_library\glew-2.1.0\include;D:\install_library\freeglut\include;D:\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\include;D:\glm-0.9.9.3\glm-0.9.9.3;C:\Users\PLUS\Downloads\assimp-3.1.1-win-binaries\include;C:\Users\PLUS\Downloads\install_library\glew-2.1.0\include;C:\Users\PLUS\Downloads\glm-0.9.9.2;C:\Users\PLUS\Downloads\install_library\freeglut\include;C:\Users\wonjong\Downloads\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\include;C:\Users\wonjong\Downloads\install_library\glew-2.1.0\include;C:\Users\wonjong\Downloads\glm-0.9.9.2\glm;C:\Users\wonjong\Downloads\install_library\freeglut\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>D:\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\lib\x64\Release;C:\Users\PLUS\Downloads\DevIL Windows SDK\lib\x64\Release;C:\Users\wonjong\Downloads\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\lib\x64\Release;D:\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\lib64;D:\install_library\freeglut\lib\x64;D:\install_library\glew-2.1.0\lib\Release\x64;C:\Users\PLUS\Downloads\assimp-3.1.1-win-binaries\lib64;C:\Users\PLUS\Downloads\install_library\freeglut\lib\x64;C:\Users\PLUS\Downloads\install_library\glew-2.1.0\lib\Release\x64;C:\Users\wonjong\Downloads\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\lib64;C:\Users\wonjong\Downloads\install_library\freeglut\lib\x64;C:\Users\wonjong\Downloads\install_library\glew-2.1.0\lib\Release\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>D:\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\include;C:\Users\PLUS\Downloads\DevIL Windows SDK\include;C:\Users\wonjong\Downloads\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\include;D:\install_library\glew-2.1.0\include;D:\install_library\freeglut\include;D:\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\include;D:\glm-0.9.9.3\glm-0.9.9.3;C:\Users\PLUS\Downloads\assimp-3.1.1-win-binaries\include;C:\Users\PLUS\Downloads\install_library\glew-2.1.0\include;C:\Users\PLUS\Downloads\glm-0.9.9.2;C:\Users\PLUS\Downloads\install_library\freeglut\include;C:\Users\wonjong\Downloads\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\include;C:\Users\wonjong\Downloads\install_library\glew-2.1.0\include;C:\Users\wonjong\Downloads\glm-0.9.9.2\glm;C:\Users\wonjong\Downloads\install_library\freeglut\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>D:\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\lib\x64\Release;C:\Users\PLUS\Downloads\DevIL Windows SDK\lib\x64\Release;C:\Users\wonjong\Downloads\DevIL-Windows-SDK-1.8.0\DevIL Windows SDK\lib\x64\Release;D:\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\lib64;D:\install_library\freeglut\lib\x64;D:\install_library\glew-2.1.0\lib\Release\x64;C:\Users\PLUS\Downloads\assimp-3.1.1-win-binaries\lib64;C:\Users\PLUS\Downloads\install_library\freeglut\lib\x64;C:\Users\PLUS\Downloads\install_library\glew-2.1.0\lib\Release\x64;C:\Users\wonjong\Downloads\assimp-3.1.1-win-binaries\assimp-3.1.1-win-binaries\lib64;C:\Users\wonjong\Downloads\install_library\freeglut\lib\x64;C:\Users\wonjong\Downloads\install_library\glew-2.1.0\lib\Release\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;Opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>ILUT.lib;ILU.lib;DevIL.lib;assimp.lib;freeglut.lib;glew32.lib;Opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <AdditionalDependencies>ILUT.lib;ILU.lib;DevIL.lib;assimp.lib;freeglut.lib;glew32.lib;Opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="cgassn1\bullet.h" />
+    <ClInclude Include="cgassn1\enemy.h" />
+    <ClInclude Include="cgassn1\gun.h" />
+    <ClInclude Include="cgassn1\map.h" />
+    <ClInclude Include="cgassn1\player.h" />
+    <ClInclude Include="cgassn1\ShaderUtil.h" />
+    <ClInclude Include="cgassn1\sys.h" />
+    <ClInclude Include="cgassn1\texture.h" />
+    <ClInclude Include="cgassn1\timer.h" />
+    <ClInclude Include="cgassn1\util.h" />
+    <ClInclude Include="cgassn1\wall.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cgassn1\bullet.cpp" />
+    <ClCompile Include="cgassn1\camera.cpp" />
+    <ClCompile Include="cgassn1\enemy.cpp" />
+    <ClCompile Include="cgassn1\gun.cpp" />
+    <ClCompile Include="cgassn1\main.cpp" />
+    <ClCompile Include="cgassn1\map.cpp" />
+    <ClCompile Include="cgassn1\mesh.cpp" />
+    <ClCompile Include="cgassn1\player.cpp" />
+    <ClCompile Include="cgassn1\ShaderUtil.cpp" />
+    <ClCompile Include="cgassn1\texture.cpp" />
+    <ClCompile Include="cgassn1\timer.cpp" />
+    <ClCompile Include="cgassn1\util.cpp" />
+    <ClCompile Include="cgassn1\wall.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cgassn1\shaders\fs.glsl" />
+    <None Include="cgassn1\shaders\fsText.glsl" />
+    <None Include="cgassn1\shaders\fsWall.glsl" />
+    <None Include="cgassn1\shaders\fsWall_flat.glsl" />
+    <None Include="cgassn1\shaders\fsWall_SH.glsl" />
+    <None Include="cgassn1\shaders\fsWall_SH_refined.glsl" />
+    <None Include="cgassn1\shaders\fs_flat.glsl" />
+    <None Include="cgassn1\shaders\vs.glsl" />
+    <None Include="cgassn1\shaders\vsText.glsl" />
+    <None Include="cgassn1\shaders\vsWall.glsl" />
+    <None Include="cgassn1\shaders\vsWall_flat.glsl" />
+    <None Include="cgassn1\shaders\vsWall_SH.glsl" />
+    <None Include="cgassn1\shaders\vsWall_SH_refined.glsl" />
+    <None Include="cgassn1\shaders\vs_flat.glsl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
