@@ -158,16 +158,52 @@ With illumination known, we next refine the prior normal map by minimizing
 \end{equation}
 
 \section{Visualization}
-    
+
+
 \section{Results}
 \subsection{Normal Refinement}
-Illumination is solve
-Normal Refinement
-Result
+The minimized illumination and per-pixel surface normals results in very small Least-Squared Error (LSE). This results in low error reproduction of the shading $s$ removed from the albedo $\rho$ during intrinsic image decomposition, see Fig. \ref{fig:grey}. 
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics [scale=0.33] {image/illum.png}
+    \end{center}
+    \caption{Examples of solved SH illumination parameters $L_l^m$}
+    \label{fig:result-illum}
+\end{figure} 
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics [scale=0.75] {image/grey-sh.png}
+    \end{center}
+    \caption{Shading realistically added using the same SH illumination parameters $L_l^m$. The results of illuminating the albedo with initial normals $N_{ref}$ and refined normals $N$. \textbf{Top:} LSE: 9.33e-10 \textbf{Middle:} LSE: 6.03e-09 \textbf{Bottom:} LSE: 3.75e-12}
+    \label{fig:grey}
+\end{figure} 
+
+The resulting normal maps appear to better match the perceived geometry of the input image over the interpolated face model, see Fig. \ref{fig:normals}.
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics [scale=0.33] {image/normals1.png}
+        \includegraphics [scale=0.33] {image/normals2.png}
+        \includegraphics [scale=0.33] {image/normals3.png}
+    \end{center}
+    \caption{Results of refined normal maps}
+    \label{fig:normals}
+\end{figure} 
 
 \subsection{Rendered Results}
-The improved reflectance is clearly visible in the illuminated untextured (uniform color) face models. The rendered untextured models using interpolated normals clearly lack fine surface details. Rendered untextured models using the refined normal map have far more reflected detail added, including nose shape, improved eye shape, more details in all areas of the face and neck, with the addition fo hair and clothing not represented by the model. There is some noise, this is caused by some loss in converting 32-bit floating point normals to unsigned char. We hope to fix this conversion issue, and we are currently seeing improvements in this area. Also regularization can also help prevent some noise, to smooth sudden changes in surface normals.
+The improved reflectance is clearly visible in the illuminated untextured (uniform color) face models. The rendered untextured models using interpolated normals clearly lack fine surface details. Rendered untextured models using the refined normal map have far more reflected detail added, including nose shape, improved eye shape, more details in all areas of the face and neck, with the addition fo hair and clothing not represented by the model. There is some noise, this is caused by some loss in converting 32-bit floating point normals to unsigned char. We hope to fix this conversion issue, and we are currently seeing improvements in this area. Also regularization can also help prevent some noise, to smooth sudden changes in surface normals. See Fig. \ref{fig:render} for result of renderings.
 
+
+\begin{figure*}[h]
+    \begin{center}
+        \includegraphics [scale=0.5] {image/render1.png}
+        \includegraphics [scale=0.5] {image/render2.png}
+        \includegraphics [scale=0.5] {image/render3.png}
+    \end{center}
+    \caption{OpenGL renderings under light source illuminates added normal details}
+    \label{fig:render}
+\end{figure*} 
 
 \section{Team Member Roles}
 See Table \ref{tab:roles}.
@@ -194,13 +230,11 @@ See Table \ref{tab:roles}.
 	Rich Forster.
 	\textit{Spherical Harmonics for Beginners}. 
 	\url{https://dickyjim.wordpress.com/2013/09/04/spherical-harmonics-for-beginners/}
-	
-	
+
 	\bibitem{igor} 
 	Igor Goldvekht. 
 	\textit{Shape-From-Shading}. 
 	https://github.com/IgorGee/Shapes-From-Shading
-    
     
     \bibitem{bell} 
     Sean Bell, Kavita Bala, Noah Snavely
