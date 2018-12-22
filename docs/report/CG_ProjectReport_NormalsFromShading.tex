@@ -40,7 +40,7 @@ Team: Avengers }
 \section{Introduction}
 \begin{figure}[t]
 	\begin{center}
-		\includegraphics [scale=0.35] {image/face_normalmapping.jpg}
+		\includegraphics [scale=0.5] {image/intro.png}
 	\end{center}
 	\caption{Example of a face model with \textbf{Left:} Geometry only, \textbf{Right:} Geometry + Normal Map}
 	\label{fig:title}
@@ -90,25 +90,18 @@ Where $I(u,v)$ is the input raw image with shading from a lit environment.
 Spherical harmonics are a set of harmonic functions defined on the surface of a sphere. Many surfaces are mostly diffuse, so we assume Lambertion diffuse surfaces. We will be using the Real and Cartesian form of $2^{nd}$-order spherical harmonics. The first band represents ambient energy, the remaining bands represent more and more complex diffuse reflectance. The Lambertian factor $a_l$ acts as a blur kernel reducing the energy at higher orders. \par
 Spherical harmonics is a common method for illumination and geometric refinement. The spherical harmonics reflectance model is widely adopted in many areas of computer graphics, from rendering to 3D reconstruction. We can estimate diffuse illumination parameters of an image scene, given some rough geometric assumptions. Illumination is assumed to be multiple light sources at an infinite distance. We can also measure energy at each pixel on an image to determine the pixel's normal vector when illumination is roughly known. Spherical harmonics is commonly used in single image Shape-from-Shading methods due to these properties. The first 3 bands of spherical harmonics are most typically used, which represent reflectance sufficiently in most cases.
 We will use the geometric prior to extract the initial normal map $N_{ref}$.  Given $N_{ref}$ and $\rho(x,y)$, we will solve the least-squares problem to estimate lighting parameters $L_l^m$,
-
 \begin{equation}
 I = \rho \sum_{l,m} a_l L_m^l Y_m^l(N_{ref}),
 \end{equation}
-
 where $Y(n_x,n_y,n_z)$ is the spherical harmonics basis function. After lighting has been estimated, we will solve for the normal map by refining $N_{ref}$ to produce $N$, the recovered lighting parameters $L_l^m$, and $\rho$,
-
 \begin{equation}
 I = \rho \sum_{l,m} a_l L_m^l Y_m^l(N).
 \end{equation}
-
 We will render the resulting normal map $N$ in OpenGL using a fragment shader. We represent a per-pixel formulation in uv-coordinates,
-
 \begin{equation}
 I(u,v) = \rho(u,v) \sum_{l,m} a_l L_m^l Y_m^l(n(u,v)).
 \end{equation}
-
 The set of real spherical harmonics basis functions in Cartesian space $Y_m^l$ for the first 3 bands are defined \cite{sfs} as 
-
 \begin{equation}
 \begin{split}
 &Y_0^0 = c_0\\
@@ -122,9 +115,7 @@ The set of real spherical harmonics basis functions in Cartesian space $Y_m^l$ f
 &Y_2^{2} = \frac{c2}{2\sqrt{3}}(3n_z^2 - 1),\\
 \end{split}
 \end{equation}
-
 where coefficients $c_l$ are denoted as,
-
 \begin{equation}
 \begin{split}
 &c_0 = \frac{1}{\sqrt{4\pi}}\\
@@ -132,9 +123,7 @@ where coefficients $c_l$ are denoted as,
 &c_2 = \frac{3\sqrt{5}}{\sqrt{12\pi}}.\\
 \end{split}
 \end{equation}
-
 The Lambertian diffuse reflectance factors $a_l$ for the first three bands are defined as,
-
 \begin{equation}
 \begin{split}
 &a_0 = \pi\\
@@ -142,10 +131,8 @@ The Lambertian diffuse reflectance factors $a_l$ for the first three bands are d
 &a_2 = \frac{2\pi}{\sqrt{8}}.\\
 \end{split}
 \end{equation}
-
 The Illumination parameters $L_l^m$ are coefficients which represent multiple unknown light sources. In $2^{nd}$-order Spherical harmonics, we will need 9 (greyscale) or 27 (RGB) coefficients. We will use the first 3 bands and greyscale similarly as \cite{sfs}.
-
-\subsection{Pipeline} 
+\section{Pipeline} 
 \begin{figure}[!h]
     \begin{center}
         \includegraphics [scale=0.35] {image/pipeline.png}
@@ -154,7 +141,6 @@ The Illumination parameters $L_l^m$ are coefficients which represent multiple un
     \label{fig:pipe1}
 \end{figure} 
 Our pipeline begins with a pre-aquired geometry assumption and an image $I$. We first use intrinsic image decomposition to obtain the albedo $\rho$. We use the interpolated normals of the assumed geometry as the prior normal map $N_{ref}$. Next we give the image $I$, albedo $\rho$, and the prior normal map $N_{ref}$ to our SH illumination and normal refinement solver, which outputs the refined normal map $N$. For face models we fit a parametric model (PCA) with facial landmarks\cite{pca} and project the model into image space to rasterize the interpolated normals and map uv-coordinates on the corresponding image.
-
 \begin{figure}[!h]
     \begin{center}
         \includegraphics [scale=0.25] {image/refine_pipeline.png}
@@ -171,11 +157,16 @@ With illumination known, we next refine the prior normal map by minimizing
 \min_{n} I(u,v) - \rho(u,v) \sum_{l,m} a_l L_{lm} Y_{lm}(n(u,v)).
 \end{equation}
 
-\section{visualization}
+\section{Visualization}
     
 \section{Results}
 \subsection{Normal Refinement}
+Illumination is solve
+Normal Refinement
+Result
+
 \subsection{Rendered Results}
+The improved reflectance is clearly visible in the illuminated untextured (uniform color) face models. The rendered untextured models using interpolated normals clearly lack fine surface details. Rendered untextured models using the refined normal map have far more reflected detail added, including nose shape, improved eye shape, more details in all areas of the face and neck, with the addition fo hair and clothing not represented by the model. There is some noise, this is caused by some loss in converting 32-bit floating point normals to unsigned char. We hope to fix this conversion issue, and we are currently seeing improvements in this area. Also regularization can also help prevent some noise, to smooth sudden changes in surface normals.
 
 
 \section{Team Member Roles}
@@ -202,7 +193,7 @@ See Table \ref{tab:roles}.
 	\bibitem{dicky} 
 	Rich Forster.
 	\textit{Spherical Harmonics for Beginners}. 
-	https://dickyjim.wordpress.com/2013/09/04/spherical-harmonics-for-beginners/
+	\url{https://dickyjim.wordpress.com/2013/09/04/spherical-harmonics-for-beginners/}
 	
 	
 	\bibitem{igor} 
@@ -213,8 +204,9 @@ See Table \ref{tab:roles}.
     
     \bibitem{bell} 
     Sean Bell, Kavita Bala, Noah Snavely
-    \textit{Intrinsic Images in the Wild” ACM Transactions on Graphics}
-    SIGGRAPH 2014.
+    \textit{Intrinsic Images in the Wild}
+     ACM Transactions on Graphics (SIGGRAPH 2014)
+     \url{https://github.com/seanbell/intrinsic}
     
     \bibitem{sfs} 
     Ira Kemelmacher-Shlizerman, Member, IEEE, and Ronen Basri, Senior Member, IEEE \textit{3D Face Reconstruction from a Single Image Using a Single Reference Face Shape}
