@@ -47,26 +47,12 @@ Team: Avengers }
 \end{figure} 
 
 \subsection{Motivation}
- There are several easy to use tools to generate 3D models geometry and texture, like 3D Studio Max, Maya, blender, and Photoshop. It is not too difficult to program or load these into OpenGL as well. The problem of using 3D geometry and Texture alone is that it can produce flat looking renderings, especially if the geometry is less detailed than the texture. This is typically the case, as texturing can hide simple geometry and flaws. There is more we can do with texture mapping than just wrapping the geometry with an RGB image. We can also add bump maps, normal maps, displacement maps, and even subsurface scattering to make the rendering more realistic. But these additional mappings are difficult to produce and are often hand-made or produced in multi-step procedures called baking. Baking is where a normal map is extracted from a high-resolution model and mapped onto a lower resolution model. Adding tuned normals to the texture can improve the perceptual quality of 3D reconstructed scenes and objects while being illuminated by a light source. We wish for there to be a simple automated procedure that can take an RGB picture with a geometric prior and produce a high-quality normal map.
+ There are several easy to use tools to generate 3D models and textures, like 3D Studio Max, Maya, blender, and Adobe Photoshop. It is not too difficult to program or load these into OpenGL as well. The problem of using 3D geometry and Texture alone is that it can produce flat looking renderings, especially if the geometry is less detailed than the texture. This is typically the case, as texturing can hide simple or flawed geometry. There is more we can do with texture mapping than just wrapping the geometry with an RGB image. We can also add bump maps, normal maps, displacement maps, and even subsurface scattering to make the rendering more realistic. But these additional mappings are difficult to produce and are often hand-made or produced in multi-step procedures, i.e. baking. Using detailed normal maps in addition to texture can improve the perceptual quality of 3D reconstructed scenes and objects while being illuminated by a light source. We wish for there to be a simple automated procedure that can take an RGB picture with a geometric prior and produce a high-quality normal map. Such a tool would be useful in entertainment and 3D Reconstruction.
 
 
 \subsection{Project Description}
-Inspired by Shape-From-Shading, we propose a tool for estimating a normal map from a given texture. We use geometric priors to extract interpolated surface normals that we will then refine. We use off-the-shelf Intrinsic Image Decomposition to estimate the albedo texture and remove shading from a single photograph. Given the albedo and interpolated normals we use Spherical Harmonics to first estimate the environment illumination and second compute a per-pixel normal map based on the diffuse surface illumination of the albedo. We can then apply this normal map in addition to the model and texture during the texturing process. We demonstrate this by using a fragment shader in OpenGL.
-
-
-
-
-\subsection{Background}
-This project requires knowledge in intrinsic image decomposition, Spherical Harmonics (SH), least-squares optimization, and normal mapping in OpenGL using fragment shaders. 
-Intrinsic image decomposition is used to decompose an image into reflectance (albedo) and shading images. We can use spherical harmonics to estimate illumination parameters of the image scene. We can also refine the interpolated normals to better represent the surface geometry in the image. Spherical harmonics is a common method for illumination and geometric refinement.  The amount of energy a surface receives is proportional to the angle of a surface to a light source, which is related to the surface normal. We can use spherical Harmonics to measure this energy at each pixel on an image and determine the pixel's normal vector. Solving for normals and lighting is typically an intermediary step in SFS. We will use the first 3 bands of spherical harmonics, which is usually enough to represent reflectance sufficiently and hight orders are typically not used.
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics [scale=0.8] {image/energy.png}
-	\end{center}
-	\caption{light energy illuminated on a surface is proportional to cosine between the surface normal N and the unit vector towards the light source L}
-	\label{fig:vgg-16}
-\end{figure} 
-
+Inspired by Shape-From-Shading, we propose a tool for estimating a normal map from a given texture. We extract interpolated normals from a geometric prior. We use off-the-shelf intrinsic image decomposition to estimate the albedo texture and remove shading from a single photograph. Given the albedo and interpolated normals, we use spherical harmonics to alternatively estimate the environment illumination first and then compute a per-pixel normal map second. We can then apply this normal map to the model in addition with texture during the texturing process. We demonstrate this by using a fragment shader in OpenGL. \par
+This project requires knowledge in Intrinsic Image Decomposition, Spherical Harmonics (SH), least-squares optimization, and illumination and normal mapping in OpenGL using fragment shaders.
 
 \section{Development Environment}
 \begin{table}[h]
@@ -80,7 +66,7 @@ Intrinsic image decomposition is used to decompose an image into reflectance (al
 
 \section{Overview}
 \subsection{Intrinsic Image Decomposition}
-We will use the geometric prior to extract the initial normal map $N_{ref}$. We also need a good approximation of the albedo texture $\rho(x,y)$, but it is difficult to acquire as we need an image without shading. We will pre-process the RGB image to remove shading $s(x,y)$ using widely available open-source Intrinsic Image Decomposition\cite{bell}. Intrinsic Image Decomposition is typically formulated as 
+ We also need a good approximation of the albedo texture $\rho(x,y)$, but it is difficult to acquire as we need an image without shading. We will pre-process the RGB image to remove shading $s(x,y)$ using widely available open-source intrinsic image decomposition\cite{bell}. intrinsic image decomposition is used to decompose an image into reflectance (albedo) and shading images, and is typically formulated as 
 \begin{equation}
 I(u,v) = \rho(u,v)s(u,v),
 \end{equation}
@@ -94,20 +80,35 @@ Where $I(u,v)$ is the input raw image with shading from a lit environment.
 \end{figure} 
 
 \subsection{Spherical Harmonics}
-Spherical harmonics are a set of harmonic functions defined on the surface of a sphere. We will be using the real and Cartesian form of $2^{nd}$-order spherical harmonics. 
-We will then Solve the least-squares problem to estimate lighting parameters $\hat{l}$ using SH and given $N_{ref}$ and $\rho(x,y)$ 
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics [scale=0.5] {image/sh_basis.jpg}
+    \end{center}
+    \caption{L the band (order), M is the degree (basis)}
+    \label{fig:sh-basis}
+\end{figure} 
+Spherical harmonics are a set of harmonic functions defined on the surface of a sphere. Many surfaces are mostly diffuse, so we assume Lambertion diffuse surfaces. We will be using the Real and Cartesian form of $2^{nd}$-order spherical harmonics. The first band represents ambient energy, the remaining bands represent more and more complex diffuse reflectance. The Lambertian factor $a_l$ acts as a blur kernel reducing the energy at higher orders. \par
+Spherical harmonics is a common method for illumination and geometric refinement. The spherical harmonics reflectance model is widely adopted in many areas of computer graphics, from rendering to 3D reconstruction. We can estimate diffuse illumination parameters of an image scene, given some rough geometric assumptions. Illumination is assumed to be multiple light sources at an infinite distance. We can also measure energy at each pixel on an image to determine the pixel's normal vector when illumination is roughly known. Spherical harmonics is commonly used in single image Shape-from-Shading methods due to these properties. The first 3 bands of spherical harmonics are most typically used, which represent reflectance sufficiently in most cases.
+We will use the geometric prior to extract the initial normal map $N_{ref}$.  Given $N_{ref}$ and $\rho(x,y)$, we will solve the least-squares problem to estimate lighting parameters $L_l^m$,
+
 \begin{equation}
 I = \rho \sum_{l,m} a_l L_m^l Y_m^l(N_{ref}),
 \end{equation}
-where $Y(n_x,n_y,n_z)$ is the Spherical Harmonics function in Cartesian space using the first 3 bands. After lighting has been estimated, we will solve for the normal map by refining $N_{ref}$ to produce $N$ using SH, the found lighting parameters $L$, and $\rho$,
+
+where $Y(n_x,n_y,n_z)$ is the spherical harmonics basis function. After lighting has been estimated, we will solve for the normal map by refining $N_{ref}$ to produce $N$, the recovered lighting parameters $L_l^m$, and $\rho$,
+
 \begin{equation}
 I = \rho \sum_{l,m} a_l L_m^l Y_m^l(N).
 \end{equation}
+
 We will render the resulting normal map $N$ in OpenGL using a fragment shader. We represent a per-pixel formulation in uv-coordinates,
+
 \begin{equation}
 I(u,v) = \rho(u,v) \sum_{l,m} a_l L_m^l Y_m^l(n(u,v)).
 \end{equation}
-The set of real spherical harmonics functions in Cartesian space $Y_m^l$ for the first 3 bands are defined \cite{sfs} as 
+
+The set of real spherical harmonics basis functions in Cartesian space $Y_m^l$ for the first 3 bands are defined \cite{sfs} as 
+
 \begin{equation}
 \begin{split}
 &Y_0^0 = c_0\\
@@ -121,7 +122,9 @@ The set of real spherical harmonics functions in Cartesian space $Y_m^l$ for the
 &Y_2^{2} = \frac{c2}{2\sqrt{3}}(3n_z^2 - 1),\\
 \end{split}
 \end{equation}
+
 where coefficients $c_l$ are denoted as,
+
 \begin{equation}
 \begin{split}
 &c_0 = \frac{1}{\sqrt{4\pi}}\\
@@ -129,7 +132,9 @@ where coefficients $c_l$ are denoted as,
 &c_2 = \frac{3\sqrt{5}}{\sqrt{12\pi}}.\\
 \end{split}
 \end{equation}
-The Lambertian reflectance factors $a_l$ for the first three bands are defined as,
+
+The Lambertian diffuse reflectance factors $a_l$ for the first three bands are defined as,
+
 \begin{equation}
 \begin{split}
 &a_0 = \pi\\
@@ -137,7 +142,8 @@ The Lambertian reflectance factors $a_l$ for the first three bands are defined a
 &a_2 = \frac{2\pi}{\sqrt{8}}.\\
 \end{split}
 \end{equation}
-The Illumination parameters $L_l^m$ are coefficients which represent multiple unknown light sources. In $2^{nd}$-order Spherical harmonics, we will need 9 (greyscale) or 27 (RGB) coefficients.
+
+The Illumination parameters $L_l^m$ are coefficients which represent multiple unknown light sources. In $2^{nd}$-order Spherical harmonics, we will need 9 (greyscale) or 27 (RGB) coefficients. We will use the first 3 bands and greyscale similarly as \cite{sfs}.
 
 \subsection{Pipeline} 
 \begin{figure}[!h]
@@ -147,13 +153,13 @@ The Illumination parameters $L_l^m$ are coefficients which represent multiple un
     \caption{Pipeline}
     \label{fig:pipe1}
 \end{figure} 
-Our pipeline begins with the pre-aquired geometry and an image $I$ with which to texture the 3D models. We first use intrinsic image decomposition to obtain the albedo $\rho$. Using the interpolated normals of the prior geometry as the prior normal map $N_{ref}$. Next we give the image $I$, albedo $\rho$, and the prior normal map $N_{ref}$ to our SH illumination and normal refinement solver, which outputs the refined normal map $N$. For face models we fit a parametric model (PCA) with facial landmarks\cite{pca} and project the model into image space to map uv-coordinates on the corresponding image.
+Our pipeline begins with a pre-aquired geometry assumption and an image $I$. We first use intrinsic image decomposition to obtain the albedo $\rho$. We use the interpolated normals of the assumed geometry as the prior normal map $N_{ref}$. Next we give the image $I$, albedo $\rho$, and the prior normal map $N_{ref}$ to our SH illumination and normal refinement solver, which outputs the refined normal map $N$. For face models we fit a parametric model (PCA) with facial landmarks\cite{pca} and project the model into image space to rasterize the interpolated normals and map uv-coordinates on the corresponding image.
 
 \begin{figure}[!h]
     \begin{center}
         \includegraphics [scale=0.25] {image/refine_pipeline.png}
     \end{center}
-    \caption{Refinement Pipeline: Inputs are Raw RGB image and Normals extracted from target geometry. Intrinsic Image Decomposition of Raw RGB image to get albedo. Solve for lighting using prior normal map and albedo. Refine Normals using albedo and solved lighting parameters.}
+    \caption{Refinement Pipeline: Inputs are raw RGB image $I$ and normals extracted from target geometry $N_{ref}$. First, intrinsic image decomposition of raw RGB image to get albedo $\rho$. Then solve for lighting using prior normal map $N_{ref}$ and albedo $\rho$. Finally, refine Normals $N$ using albedo $\rho$ and solved lighting parameters $L_l^m$.}
     \label{fig:pipe2}
 \end{figure} 
 We first solve for the unknown illumination parameters $L_l^m$ by minimizing the energy
@@ -164,7 +170,6 @@ With illumination known, we next refine the prior normal map by minimizing
 \begin{equation}
 \min_{n} I(u,v) - \rho(u,v) \sum_{l,m} a_l L_{lm} Y_{lm}(n(u,v)).
 \end{equation}
-We use grayscale, as this has been shown\cite{sfs} to be sufficient for computing illumination and surface normals. 
 
 \section{visualization}
     
@@ -180,8 +185,8 @@ See Table \ref{tab:roles}.
 		\textbf{Name} & Roles \\
 		\hline
 		WonJong & Intrinsic Image Decomposition \\
-		Dahun & Render Model, Texture, and Normal Map \\
-		Jake & SH Normal Map Estimation \\
+		Dahun & Rendering: Model, Texture, and Normal Map \\
+		Jake & Spherical Harmonics Normal Map Refinement \\
 		\hline
 	\end{tabular}
 	\caption{Team Member Roles}
