@@ -180,7 +180,7 @@ def run_fitting(image, albedo, normals_init, outputPath):
 
     # write result
     print("Estimatied Lignting Params:\n{0}".format(illum))
-    cv2.imwrite(outputPath, normals*255)
+    cv2.imwrite(outputPath, (normals+1)*128)
     cv2.imwrite("before.png", result_init*255)
     cv2.imwrite("result.png", result*255)
     cv2.imwrite("albedo.png", albedo_r*255)
@@ -211,7 +211,9 @@ def main():
         # Recreate normal map from uchar
         normalMap_raw = cv2.imread(normalsPath, cv2.IMREAD_COLOR)
         #normalMap = ((normalMap_raw - 127) / 127)
-        normalMap = normalMap_raw/255
+        # normalMap = normalMap_raw/255
+
+        normalMap = (normalMap_raw / 128) - 1
     else:
         print("Assuming solid surface perpendicular to camera...")
         normalMap = np.zeros(np.hstack((image.shape,3)))
