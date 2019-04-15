@@ -28,9 +28,9 @@ def computeSHEnergy(l, normals):
     c = getSHNormalBasis()
 
     # OpenCV reads images in BGR, account for this by swapping x and z
-    nx = normals[:, :, 2].reshape(-1)
-    ny = normals[:, :, 1].reshape(-1)
-    nz = normals[:, :, 0].reshape(-1)
+    nx = normals[..., 2].reshape(-1)
+    ny = normals[..., 1].reshape(-1)
+    nz = normals[..., 0].reshape(-1)
 
     R0 = a[0] * l[0] * c[0]
 

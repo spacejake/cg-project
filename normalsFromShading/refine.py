@@ -88,9 +88,19 @@ def main():
                 # io.show()
                 # cv2.waitKey(500)
 
-                out_fn = "{}.n-refine.png".format(id)
+                out_illum_fn = "{}.sh-illum.csv".format(id)
+                out_normals_fn = "{}.n-refine.png".format(id)
 
-                run_fitting(target_masked/255, albedo, normalMap, path.join(args.output, out_fn))
+                mask_idx = np.nonzero(mask)
+
+                illum, normals_refine = run_fitting(target_masked[mask_idx]/255, albedo[mask_idx], normalMap[mask_idx])
+
+                normalMap_refine = normalMap
+                normalMap_refine[mask_idx] = normals_refine
+                # illum, normalMap_refine = run_fitting(target_masked / 255, albedo, normalMap)
+
+                np.savetxt(path.join(args.output, out_illum_fn), illum, delimiter=",")
+                cv2.imwrite(path.join(args.output, out_normals_fn), (normalMap_refine + 1) * 128)
 
     cv2.destroyAllWindows()
 

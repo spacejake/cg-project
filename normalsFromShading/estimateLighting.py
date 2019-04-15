@@ -54,6 +54,7 @@ def normalsFromShading(image,        # input RGB image
     image_ch = ch.array(image)
     albedo_ch = ch.array(albedo)
     illum_ch = ch.array(illum)
+    # normals_init_ch = ch.array(normals)
     normals_ch = ch.array(normals)
 
     """ function: estimate Normals from Shading using Spherical Harmonics
@@ -97,10 +98,14 @@ def normalsFromShading(image,        # input RGB image
 
     # regularizer
     #illum_reg = weights['illum_reg'] * illum_ch
+    # L2 Regulaization
     normals_reg = Ch( weights['normals_reg']) * normals_ch
+    ch.sum
+
 
     objectives = {}
-    objectives.update({'illum': illum_err})# 'normals_reg': normals_reg})
+    # objectives.update({'illum': illum_err})
+    objectives.update({'illum': illum_err, 'normals_reg': normals_reg})
 
     # on_step callback
     def on_step(_):
@@ -144,18 +149,19 @@ def normalsFromShading(image,        # input RGB image
 
 # -----------------------------------------------------------------------------
 
-def run_fitting(image, albedo, normals_init, outputPath):
+def run_fitting(image, albedo, normals_init, outputPath=None):
 
     # output
-    dir_path = path.dirname(path.realpath(outputPath))
-    mkdir_s(dir_path)
+    if outputPath is not None:
+        dir_path = path.dirname(path.realpath(outputPath))
+        mkdir_s(dir_path)
 
     # weights
     weights = {}
     weights['illum'] = 1.0
     weights['normals'] = 1.0
     weights['illum_reg'] = 0.0
-    weights['normals_reg'] = 0.001
+    weights['normals_reg'] = 0.0
 
     # optimization options
     import scipy.sparse as sp
@@ -176,14 +182,19 @@ def run_fitting(image, albedo, normals_init, outputPath):
                             illum=illum_init,  # albedo image
                             normals=normals_init, # Initial normal map
                             weights=weights,  # weights for the objectives
-                            opt_options=opt_options)  # options
+                            opt_options=opt_options)   # options
 
     # write result
-    print("Estimatied Lignting Params:\n{0}".format(illum))
-    cv2.imwrite(outputPath, (normals+1)*128)
-    cv2.imwrite("before.png", result_init*255)
-    cv2.imwrite("result.png", result*255)
-    cv2.imwrite("albedo.png", albedo_r*255)
+    print("Estimatied SH Lignting Params:\n{0}".format(illum))
+
+    if outputPath is not None:
+        np.savetxt("{}.csv".format(outputPath), illum, delimiter=",")
+        cv2.imwrite(outputPath, (normals+1)*128)
+        cv2.imwrite("before.png", result_init*255)
+        cv2.imwrite("result.png", result*255)
+        cv2.imwrite("albedo.png", albedo_r*255)
+
+    return illum, normals
 
 
 # -----------------------------------------------------------------------------
