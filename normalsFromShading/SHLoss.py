@@ -49,7 +49,7 @@ def computeSHEnergy(l, normals):
     return R
 
 
-def illum_error(image, albedo, illum, normals, weight):
+def illum_error(image, albedo, illum, normals, mask, weight):
 
     # I(u,v) = A(u,v) * sum_{lm}( a_l * l_lm * Y_lm(n(u,v))
     # A(u,v) : Albedo (surface reflectance color) at image coordiange
@@ -69,3 +69,24 @@ def illum_error(image, albedo, illum, normals, weight):
     residuals = weight * (I - model)
 
     return residuals
+
+
+LoG_kernal = ch.asarray(np.array([[-1,-1,-1],
+                                  [-1,8,-1],
+                                  [-1,-1,-1]], dtype=np.float64))
+
+
+def illum_reg(normals, normals_ref, edge_list, mask, weight):
+
+    w,h,c = normals.shape
+
+    delta = (normals - normals_ref).reshape([w * h, 3])
+    delta = delta*delta
+
+    laplacian = ch.sum(delta[edge_list], 1)
+    laplacian = 8*delta - laplacian
+
+
+    return weight * laplacian[mask]
+
+

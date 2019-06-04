@@ -91,13 +91,39 @@ def main():
                 out_illum_fn = "{}.sh-illum.csv".format(id)
                 out_normals_fn = "{}.n-refine.png".format(id)
 
+                w, h, c = normals.shape
+
+                edge_map = np.zeros([w,h], dtype=np.float64)
+                edge_list = np.zeros([w,h,8], dtype=np.uint64)
+                for u in range(1,w-1):
+                    for v in range(1,h-1):
+                        window = normals[u-1:u+2, v-1:v+2]
+                        edge_map[u,v] = (np.min(np.sum(window, 2)) > 0).astype(dtype=np.uint8)
+
+                        edge_idx = 0
+                        for i in range(-1,2):
+                            for j in range(-1,2):
+                                if i is 0 and j is 0: continue
+                                edge_list[u,v, edge_idx] = (u+i)*h + (v+j)
+                                edge_idx += 1
+                edge_map = edge_map.reshape([w*h])
+                edge_list = edge_list.reshape([w*h,8])
+                mask_reg = np.nonzero(edge_map)
+                #
+                # laplacian = np.sum(normalMap.reshape([w*h,3])[edge_list], 1)
+                # laplacian = 8*normalMap.reshape([w*h,3]) - laplacian
+
+                # laplacian = np.sum(normalMap.reshape([w*h,3])[edge_list], 1)
+                # laplacian = 8*normalMap.reshape([w*h,3]) - laplacian
+
                 mask_idx = np.nonzero(mask)
 
-                illum, normals_refine = run_fitting(target_masked[mask_idx]/255, albedo[mask_idx], normalMap[mask_idx])
+                # illum, normals_refine = run_fitting(target_masked[mask_idx]/255, albedo[mask_idx], normalMap[mask_idx])
+                #
+                # normalMap_refine = normalMap
+                # normalMap_refine[mask_idx] = normals_refine
 
-                normalMap_refine = normalMap
-                normalMap_refine[mask_idx] = normals_refine
-                # illum, normalMap_refine = run_fitting(target_masked / 255, albedo, normalMap)
+                illum, normalMap_refine = run_fitting(target_masked / 255, albedo, normalMap, mask_idx, mask_reg, edge_list)
 
                 np.savetxt(path.join(args.output, out_illum_fn), illum, delimiter=",")
                 cv2.imwrite(path.join(args.output, out_normals_fn), (normalMap_refine + 1) * 128)

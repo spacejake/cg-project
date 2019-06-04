@@ -49,12 +49,13 @@ def normalsFromShading(image,        # input RGB image
                        illum,   # Initial SH illumination Parameters
                        normals, # Initial normal map
                        weights,      # weights for the objectives
-                       opt_options): # options
+                       opt_options, # options
+                       mask, mask_reg, edge_list):
 
     image_ch = ch.array(image)
     albedo_ch = ch.array(albedo)
     illum_ch = ch.array(illum)
-    # normals_init_ch = ch.array(normals)
+    normals_ref_ch = ch.array(normals)
     normals_ch = ch.array(normals)
 
     """ function: estimate Normals from Shading using Spherical Harmonics
@@ -93,19 +94,24 @@ def normalsFromShading(image,        # input RGB image
                                albedo=albedo_ch,
                                illum=illum_ch,
                                normals=normals_ch,
+                               mask=mask,
                                weight=weights['illum'])
 
 
     # regularizer
     #illum_reg = weights['illum_reg'] * illum_ch
-    # L2 Regulaization
-    normals_reg = Ch( weights['normals_reg']) * normals_ch
-    ch.sum
+    # Difference Regularization
+    # normals_reg = Ch(weights['normals_reg']) * (normals_ch - normals_ref_ch)
+    illum_reg = sh.illum_reg(normals=normals_ch,
+                             normals_ref=normals_ref_ch,
+                             edge_list=edge_list,
+                             mask=mask_reg,
+                             weight=weights['normals_reg'])
 
 
     objectives = {}
     # objectives.update({'illum': illum_err})
-    objectives.update({'illum': illum_err, 'normals_reg': normals_reg})
+    objectives.update({'illum': illum_err, 'normals_reg': illum_reg})
 
     # on_step callback
     def on_step(_):
@@ -149,7 +155,7 @@ def normalsFromShading(image,        # input RGB image
 
 # -----------------------------------------------------------------------------
 
-def run_fitting(image, albedo, normals_init, outputPath=None):
+def run_fitting(image, albedo, normals_init, mask, mask_reg, edge_list, outputPath=None):
 
     # output
     if outputPath is not None:
@@ -161,7 +167,7 @@ def run_fitting(image, albedo, normals_init, outputPath=None):
     weights['illum'] = 1.0
     weights['normals'] = 1.0
     weights['illum_reg'] = 0.0
-    weights['normals_reg'] = 0.0
+    weights['normals_reg'] = 3e-3
 
     # optimization options
     import scipy.sparse as sp
@@ -169,7 +175,7 @@ def run_fitting(image, albedo, normals_init, outputPath=None):
     opt_options['disp'] = 1
     opt_options['delta_0'] = 0.1
     opt_options['e_3'] = 1e-4
-    opt_options['maxiter'] = 100
+    opt_options['maxiter'] = 200
     sparse_solver = lambda A, x: sp.linalg.cg(A, x, maxiter=opt_options['maxiter'])[0]
     opt_options['sparse_solver'] = sparse_solver
 
@@ -182,7 +188,10 @@ def run_fitting(image, albedo, normals_init, outputPath=None):
                             illum=illum_init,  # albedo image
                             normals=normals_init, # Initial normal map
                             weights=weights,  # weights for the objectives
-                            opt_options=opt_options)   # options
+                            opt_options=opt_options,  # options
+                            mask=mask,
+                            mask_reg=mask_reg,
+                            edge_list=edge_list)
 
     # write result
     print("Estimatied SH Lignting Params:\n{0}".format(illum))
